@@ -25,7 +25,7 @@ func newPoller(queues []string, isStrict bool) (*poller, error) {
 
 func (p *poller) getDeferred(conn *RedisConn) (*Deferred, error) {
 	// Do a check for deferred jobs
-	reply, err := deferredCommand.Do(conn.Conn, fmt.Sprintf("%s_deferred", namespace), int32(time.Now().Unix()))
+	reply, err := deferredCommand.Do(conn.Conn, fmt.Sprintf("%s_deferred", workerSettings.Namespace), int32(time.Now().Unix()))
 	if reply == nil {
 		// Got no deferred jobs
 		return nil, nil
@@ -47,7 +47,7 @@ func (p *poller) getDeferred(conn *RedisConn) (*Deferred, error) {
 			return nil, err
 		}
 
-		conn.Send("LPUSH", fmt.Sprintf("%squeue:%s", namespace, deferred.Queue), buf)
+		conn.Send("LPUSH", fmt.Sprintf("%squeue:%s", workerSettings.Namespace, deferred.Queue), buf)
 		conn.Flush()
 
 		return deferred, nil
@@ -58,7 +58,7 @@ func (p *poller) getDeferred(conn *RedisConn) (*Deferred, error) {
 	}
 }
 
-func (p *poller) getJob(conn *RedisConn) (*job, error) {
+func (p *poller) getJob(conn *RedisConn) (*Job, error) {
 	logger.Debugf("Checking deferred queue")
 	for {
 		deferred, err := p.getDeferred(conn)

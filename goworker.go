@@ -1,7 +1,6 @@
 package goworker
 
 import (
-	"github.com/cihub/seelog"
 	"os"
 	"strconv"
 	"sync"
