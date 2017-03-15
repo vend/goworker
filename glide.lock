@@ -1,5 +1,5 @@
-hash: 79b879a2140ad1f92d0208a0015fcb99636b9247b7ed1fdc038925df82e7e5f6
-updated: 2017-03-16T11:16:39.743300615+13:00
+hash: 482954f1e9d7a6594b4c8317459d54bdf99efe4b3f419dfa92b32edbc82aca0e
+updated: 2017-03-16T11:37:26.43531998+13:00
 imports:
 - name: github.com/cihub/seelog
   version: d2c6e5aa9fbfdd1c624e140287063c7730654115
@@ -10,6 +10,8 @@ imports:
   - redis
 - name: github.com/golang/glog
   version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
+- name: github.com/vend/vetrics
+  version: 20a46c56115934740085d10c523bb77a611b7d1d
 - name: github.com/youtube/vitess
   version: dde85592d9dcb9e448706a5d8f0be1fef9969cf2
   subpackages:

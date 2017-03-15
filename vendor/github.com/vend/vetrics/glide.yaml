@@ -1,0 +1,8 @@
+package: github.com/vend/vetrics
+import:
+- package: github.com/markchadwick/go-datadog
+- package: github.com/rcrowley/go-metrics
+- package: github.com/vend/config
+- package: github.com/vend/go-common
+  subpackages:
+  - shutdown
