@@ -1,0 +1,10 @@
+.add-button {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+}
+
+md-icon {
+  color: white;
+  padding: 0 !important;
+}

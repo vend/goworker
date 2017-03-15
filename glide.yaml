@@ -1,0 +1,15 @@
+package: github.com/vend/goworker
+import:
+- package: github.com/cihub/seelog
+  version: ^2.6.0
+- package: github.com/garyburd/redigo
+  version: ^1.0.0
+  subpackages:
+  - redis
+- package: github.com/youtube/vitess
+  version: ^2.1.0-alpha.2
+  subpackages:
+  - go/pools
+- package: golang.org/x/net
+  subpackages:
+  - context
