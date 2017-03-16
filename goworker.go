@@ -1,6 +1,7 @@
 package goworker
 
 import (
+	"errors"
 	"os"
 	"strconv"
 	"sync"
@@ -9,6 +10,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/cihub/seelog"
+	"github.com/vend/vetrics"
 	"github.com/youtube/vitess/go/pools"
 )
 
@@ -34,6 +36,10 @@ type WorkerSettings struct {
 	ExitOnComplete bool
 	IsStrict       bool
 	UseNumber      bool
+	MetricsStderr  bool
+	MetricsDatadog bool
+	DatadogApiKey  string
+	DatadogTags    string
 }
 
 func SetSettings(settings WorkerSettings) {
@@ -60,6 +66,23 @@ func Init() error {
 		ctx = context.Background()
 
 		pool = newRedisPool(workerSettings.URI, workerSettings.Connections, workerSettings.Connections, time.Minute)
+
+		if workerSettings.MetricsStderr {
+			vetrics.EnableStderr()
+		}
+
+		if workerSettings.MetricsDatadog {
+			if workerSettings.DatadogApiKey != "" {
+				vetrics.EnableDatadog(workerSettings.DatadogApiKey)
+				// vetrics.set-datadog-tags-somehow(workerSettings.DatadogTags)
+			} else {
+				err := errors.New("No Datadog API key provided")
+				return err
+			}
+		}
+
+		gauge := vetrics.Metrics().Gauge("start-up-init-test")
+		gauge.Update(1)
 
 		initialized = true
 	}

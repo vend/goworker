@@ -124,6 +124,13 @@ func init() {
 	flag.BoolVar(&workerSettings.ExitOnComplete, "exit-on-complete", false, "exit when the queue is empty")
 
 	flag.BoolVar(&workerSettings.UseNumber, "use-number", false, "use json.Number instead of float64 when decoding numbers in JSON. will default to true soon")
+
+	flag.BoolVar(&workerSettings.MetricsStderr, "metrics-stderr", false, "enable stderr metrics")
+	flag.BoolVar(&workerSettings.MetricsDatadog, "metrics-datadog", false, "enable DataDog API metrics")
+
+	flag.StringVar(&workerSettings.DatadogApiKey, "datadog-api-key", "", "DataDog API key")
+	flag.StringVar(&workerSettings.DatadogTags, "datadog-tags", "", "Tags to apply to all metrics")
+
 }
 
 func flags() error {

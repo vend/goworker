@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/vend/vetrics"
 	"sync"
 	"time"
 )
@@ -59,12 +60,18 @@ func (w *worker) fail(conn *RedisConn, job *Job, err error) error {
 	}
 	conn.Send("RPUSH", fmt.Sprintf("%sfailed", workerSettings.Namespace), buffer)
 
+	counter := vetrics.Metrics().Counter("processed#queue=" + job.Queue)
+	counter.Inc(1)
+
 	return w.process.fail(conn)
 }
 
 func (w *worker) succeed(conn *RedisConn, job *Job) error {
 	conn.Send("INCR", fmt.Sprintf("%sstat:processed", workerSettings.Namespace))
 	conn.Send("INCR", fmt.Sprintf("%sstat:processed:%s", workerSettings.Namespace, w))
+
+	counter := vetrics.Metrics().Counter("failed#queue=" + job.Queue)
+	counter.Inc(1)
 
 	return nil
 }
