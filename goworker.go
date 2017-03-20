@@ -82,7 +82,16 @@ func GetConn() (*RedisConn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return resource.(*RedisConn), nil
+
+	redisConn := resource.(*RedisConn)
+
+	_, err = redisConn.Conn.Do("PING")
+	if err != nil {
+		logger.Errorf("Error validating connection from pool %s\n", err)
+		return nil, err
+	}
+
+	return redisConn, nil
 }
 
 // PutConn puts a connection back into the connection pool.
